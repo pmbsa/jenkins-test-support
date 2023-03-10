@@ -1,0 +1,57 @@
+apply plugin: 'groovy'
+
+repositories {
+    maven {
+        url 'http://nexus.127.0.0.1.nip.io/repository/maven-public/'
+        allowInsecureProtocol = true
+    }
+    maven { url 'https://repo.jenkins-ci.org/releases/' }
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy-all:3.0.2'
+    implementation 'com.cloudbees:groovy-cps:1.1'
+    implementation 'org.yaml:snakeyaml:1.18'
+    implementation 'cglib:cglib-nodep:3.3.0'
+    implementation 'com.lesfurets:jenkins-pipeline-unit:1.9'
+    implementation 'net.sf.json-lib:json-lib:2.4:jdk13'
+    implementation 'org.spockframework:spock-core:2.3-groovy-3.0'
+    testImplementation 'org.objenesis:objenesis:3.3'
+}
+
+buildscript {
+    repositories {
+        maven {
+            url 'http://nexus.127.0.0.1.nip.io/repository/maven-public/'
+            allowInsecureProtocol = true
+        }
+        maven { url 'https://repo.jenkins-ci.org/releases/' }
+        mavenLocal()
+    }
+}
+sourceSets {
+    main {
+        groovy {
+            srcDirs=['src', 'vars']
+        }
+        java {
+            srcDirs = []
+        }
+        resources {
+            srcDirs = []
+        }
+    }
+    test {
+        groovy {
+            srcDirs= ['test']
+        }
+    }
+}
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+}
+

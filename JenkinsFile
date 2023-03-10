@@ -1,0 +1,17 @@
+#!/usr/bin/env groovy
+def JenkinsFile
+def agentID String = UUID.randomUUID().toString()
+    def templateRepo String = "Jenkins-Shared-Pipelines"
+def buildArchetype String = "gradlepipeline"
+podTemplate(label: "init-${agentID}", inheritFrom: 'pffcinit')
+{
+    stage('Loading Jenkinsfile') {
+        jenkinsFile = fileLoader.fromGit("pipelines/pipelinebuilder/${buildArchetype}Jenkinsfile"
+        , "https://ghe.service.group/PFFC/${tamplateRepo}.git"
+        , "main"
+        , "JenkinsGHEPAT"
+        , "init-${agentID}")
+    }
+}
+
+
